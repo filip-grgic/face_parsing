@@ -1,7 +1,7 @@
 import os
 import sys
 import shutil
-from setuptools import setup
+from setuptools import find_namespace_packages, setup
 
 
 def clean_repo():
@@ -34,7 +34,7 @@ config = {
     'description': 'RoI Tanh-polar Transformer Network for Face Parsing in the Wild.',
     'author': 'Yiming Lin',
     'author_email': 'yimingling.ibug@gmail.com',
-    'packages': ['ibug.face_parsing'],
+    'packages': find_namespace_packages(),
     'install_requires': ['numpy>=1.17.0', 'scipy>=1.1.0', 'torch>=1.6.0',
                          'torchvision>=0.7.0', 'opencv-python>= 3.4.2'],
     'zip_safe': False

@@ -1,6 +1,7 @@
 import os
 import sys
 import shutil
+import subprocess
 from setuptools import find_namespace_packages, setup
 
 
@@ -27,6 +28,19 @@ with open(os.path.join(script_folder, 'ibug', 'face_parsing', '__init__.py')) as
 if _version is None:
     sys.exit('Sorry, cannot find version information.')
 
+def pull_first():
+    """This script is in a git directory that can be pulled."""
+    cwd = os.getcwd()
+    gitdir = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(gitdir)
+    try:
+        subprocess.call(['git', 'lfs', 'pull'])
+    except subprocess.CalledProcessError:
+        raise RuntimeError("Make sure git-lfs is installed!")
+    os.chdir(cwd)
+
+pull_first()
+
 # Installation
 config = {
     'name': 'face_parsing',
@@ -35,6 +49,9 @@ config = {
     'author': 'Yiming Lin',
     'author_email': 'yimingling.ibug@gmail.com',
     'packages': find_namespace_packages(),
+    'package_data': {
+        'ibug.face_parsing.resnet.weights': ['*.torch']
+    },
     'install_requires': ['numpy>=1.17.0', 'scipy>=1.1.0', 'torch>=1.6.0',
                          'torchvision>=0.7.0', 'opencv-python>= 3.4.2'],
     'zip_safe': False
